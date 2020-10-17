@@ -1,0 +1,68 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+
+    - name: Get ElasticSearch info
+      uri:
+        url: https://localhost:9200
+        validate_certs: false
+        method: GET
+        user: admin
+        password: admin
+        status_code: 200
+      register: uri_result
+      until: uri_result is not failed
+      retries: 12
+      delay: 10
+    - name: Get ElasticSearch info
+      assert:
+        that:
+          - uri_result.json.cluster_name == 'elasticsearch'
+          - uri_result.json.version.number == '7.9.1'
+        quiet: true
+
+    - name: Get ElasticSearch info
+      uri:
+        url: 'https://localhost:9200/_cat/nodes?v&format=json'
+        validate_certs: false
+        method: GET
+        user: admin
+        password: admin
+        status_code: 200
+      register: nodes_result
+      until: nodes_result is not failed
+      retries: 12
+      delay: 10
+    - name: Get ElasticSearch info
+      assert:
+        that:
+          - nodes_result.json|length == 1
+        quiet: true
+
+
+    - name: Get ElasticSearch info
+      uri:
+        url: 'https://localhost:9200/_cat/plugins?v&format=json'
+        validate_certs: false
+        method: GET
+        user: admin
+        password: admin
+        status_code: 200
+      register: plugins_result
+      until: plugins_result is not failed
+      retries: 12
+      delay: 10
+    - name: Get ElasticSearch info
+      assert:
+        that:
+          - "plugins_result.json | selectattr('component', 'eq', 'opendistro-anomaly-detection')"
+          - "plugins_result.json | selectattr('component', 'eq', 'opendistro-job-scheduler')"
+          - "plugins_result.json | selectattr('component', 'eq', 'opendistro-knn')"
+          - "plugins_result.json | selectattr('component', 'eq', 'opendistro_alerting')"
+          - "plugins_result.json | selectattr('component', 'eq', 'opendistro_index_management')"
+          - "plugins_result.json | selectattr('component', 'eq', 'opendistro_performance_analyzer')"
+          - "plugins_result.json | selectattr('component', 'eq', 'opendistro_security')"
+          - "plugins_result.json | selectattr('component', 'eq', 'opendistro_sql')"
+        quiet: true

@@ -1,0 +1,42 @@
+---
+- name: Add Java PPA repo
+  apt_repository:
+    repo: 'ppa:openjdk-r/ppa'
+
+- name: Add OpenDistro apt key
+  apt_key:
+    url: https://d3g5vo6xdbdb9a.cloudfront.net/GPG-KEY-opendistroforelasticsearch
+    state: present
+
+- name: Add specified repository into sources list using specified filename
+  apt_repository:
+    repo: deb https://d3g5vo6xdbdb9a.cloudfront.net/apt stable main
+    state: present
+    filename: opendistro
+
+- name: Add OpenDistro apt key
+  apt_key:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    state: present
+
+- name: Add specified repository into sources list using specified filename
+  apt_repository:
+    repo: deb https://artifacts.elastic.co/packages/oss-7.x/apt stable main
+    state: present
+    filename: opendistro
+
+- name: Install packages
+  apt:
+    name:
+      - openjdk-11-jdk
+      - unzip
+      - elasticsearch-oss=7.9.1
+      - opendistroforelasticsearch
+    state: present
+    update_cache: true
+
+- name: Enable elasticsearch
+  service:
+    name: elasticsearch
+    state: started
+    enabled: true
