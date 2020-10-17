@@ -66,3 +66,22 @@
           - "plugins_result.json | selectattr('component', 'eq', 'opendistro_security')"
           - "plugins_result.json | selectattr('component', 'eq', 'opendistro_sql')"
         quiet: true
+
+    - name: Get Kibana info
+      uri:
+        url: 'http://localhost:5601/api/status'
+        validate_certs: false
+        method: GET
+        user: admin
+        password: admin
+        status_code: 200
+      register: kibana_result
+      until: kibana_result is not failed
+      retries: 12
+      delay: 10
+    - name: Get Kibana info
+      assert:
+        that:
+          - "kibana_result.json.version.number == '7.9.1'"
+          - "kibana_result.json.status.overall.state == 'green'"
+        quiet: true

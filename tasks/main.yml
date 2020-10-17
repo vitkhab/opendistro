@@ -32,11 +32,30 @@
       - unzip
       - elasticsearch-oss=7.9.1
       - opendistroforelasticsearch
+      - opendistroforelasticsearch-kibana
     state: present
     update_cache: true
 
 - name: Enable elasticsearch
   service:
     name: elasticsearch
+    state: started
+    enabled: true
+
+# A little of black magic to make init-script work from Ansible
+- name: Slurp hosts file
+  slurp:
+    src: /etc/init.d/kibana
+  register: slurpfile
+
+- name: dest
+  shell:
+    cmd: sed -i '1 i#!/bin/sh' /etc/init.d/kibana
+    warn: false
+  when: (slurpfile['content'] | b64decode).split('\n')[0] != '#!/bin/sh'
+
+- name: Enable kibana
+  service:
+    name: kibana
     state: started
     enabled: true
