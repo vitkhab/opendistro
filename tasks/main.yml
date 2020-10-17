@@ -30,9 +30,9 @@
     name:
       - openjdk-11-jdk
       - unzip
-      - elasticsearch-oss=7.9.1
-      - opendistroforelasticsearch
-      - opendistroforelasticsearch-kibana
+      - "elasticsearch-oss={{ opendistro_elasticsearch_version }}"
+      - "opendistroforelasticsearch={{ opendistro_opendistro_version }}"
+      - "opendistroforelasticsearch-kibana={{ opendistro_opendistro_version }}"
     state: present
     update_cache: true
 

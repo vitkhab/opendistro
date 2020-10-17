@@ -1,0 +1,6 @@
+---
+# Check compatible versions at https://opendistro.github.io/for-elasticsearch-docs/version-history/
+# Do not remove asterisk '*' from `opendistro_opendistro_version` var.
+# Opendistro component might have slightly different versions
+opendistro_opendistro_version: '1.10.1*'
+opendistro_elasticsearch_version: '7.9.1'
