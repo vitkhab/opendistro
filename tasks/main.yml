@@ -43,13 +43,13 @@
     enabled: true
 
 # A little of black magic to make init-script work from Ansible
-- name: Slurp hosts file
+- name: Slurp kibana init script
   slurp:
     src: /etc/init.d/kibana
   register: slurpfile
 
 - name: dest
-  shell:
+  command:
     cmd: sed -i '1 i#!/bin/sh' /etc/init.d/kibana
     warn: false
   when: (slurpfile['content'] | b64decode).split('\n')[0] != '#!/bin/sh'
