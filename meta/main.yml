@@ -1,0 +1,21 @@
+---
+dependencies: []
+
+galaxy_info:
+  role_name: opendistro
+  author: vitkhab
+  description: OpenDistro for ElasticSearch installation.
+  license: "MIT"
+  min_ansible_version: 2.10
+  platforms:
+    - name: Ubuntu
+      versions:
+        - trusty
+        - xenial
+        - focal
+  galaxy_tags:
+    - elk
+    - opendistro
+    - elasticsearch
+    - logging
+    - log
