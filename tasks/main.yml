@@ -54,6 +54,15 @@
     warn: false
   when: (slurpfile['content'] | b64decode).split('\n')[0] != '#!/bin/sh'
 
+- name: Configure kibana
+  template:
+    src: kibana.yml.j2
+    dest: /etc/kibana/kibana.yml
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart kibana
+
 - name: Enable kibana
   service:
     name: kibana
