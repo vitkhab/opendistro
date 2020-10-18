@@ -28,6 +28,7 @@
 - name: Install packages
   apt:
     name:
+      - apt-transport-https
       - openjdk-11-jdk
       - unzip
       - "elasticsearch-oss={{ opendistro_elasticsearch_version }}"
