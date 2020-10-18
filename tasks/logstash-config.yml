@@ -1,0 +1,25 @@
+---
+- name: Configure pipelines
+  template:
+    src: pipelines.yml.j2
+    dest: /etc/logstash/pipelines.yml
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart logstash
+
+- name: Create pipeline files
+  copy:
+    dest: "{{ item.path }}"
+    content: "{{ item.config }}"
+    owner: root
+    group: root
+    mode: 0644
+  loop: "{{ opendistro_logstash_pipeline_files }}"
+  notify: restart logstash
+
+- name: Enable logstash
+  service:
+    name: logstash
+    state: started
+    enabled: true

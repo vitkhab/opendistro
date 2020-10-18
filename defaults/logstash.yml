@@ -1,0 +1,25 @@
+---
+opendistro_logstash_pipelines:
+  - pipeline.id: main
+    path.config: "/etc/logstash/conf.d/*.conf"
+
+opendistro_logstash_pipeline_files:
+  - path: /etc/logstash/conf.d/logstash.conf
+    config: |
+      input {
+        beats {
+          port => 5044
+        }
+      }
+
+      output {
+        elasticsearch {
+          hosts => ["https://localhost:9200"]
+          ssl => true
+          ssl_certificate_verification => false
+          ilm_enabled => false
+          user => "logstash"
+          password => "logstash"
+          index => "%{[@metadata][beat]}-%{[@metadata][version]}-%{+YYYY.MM.dd}"
+        }
+      }

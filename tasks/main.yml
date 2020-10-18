@@ -72,20 +72,7 @@
     state: started
     enabled: true
 
-- name: Configure logstash
-  template:
-    src: logstash.conf.j2
-    dest: /etc/logstash/conf.d/logstash.conf
-    owner: root
-    group: root
-    mode: 0644
-  notify: restart logstash
-
-- name: Enable logstash
-  service:
-    name: logstash
-    state: started
-    enabled: true
+- include_tasks: logstash-config.yml
 
 - name: Configure filebeat
   template:

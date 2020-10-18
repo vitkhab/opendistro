@@ -1,0 +1,7 @@
+# This file is where you define your pipelines. You can define multiple.
+# For more information on multiple pipelines, see the documentation:
+#   https://www.elastic.co/guide/en/logstash/current/multiple-pipelines.html
+
+{% for pipeline in opendistro_logstash_pipelines %}
+- {{ pipeline | to_nice_yaml  | indent(2, false) }}
+{%- endfor %}
