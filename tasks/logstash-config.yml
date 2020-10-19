@@ -1,4 +1,10 @@
 ---
+- name: Install logstash
+  apt:
+    name:
+      - "logstash-oss=1:{{ opendistro_elasticsearch_version }}-1"
+    state: present
+
 - name: Configure pipelines
   template:
     src: pipelines.yml.j2

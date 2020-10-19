@@ -29,15 +29,19 @@
   apt:
     name:
       - apt-transport-https
+    state: present
+    update_cache: true
+
+- name: Install packages
+  apt:
+    name:
       - openjdk-11-jdk
       - unzip
       - "elasticsearch-oss={{ opendistro_elasticsearch_version }}"
-      - "logstash-oss=1:{{ opendistro_elasticsearch_version }}-1"
       - "opendistroforelasticsearch={{ opendistro_opendistro_version }}"
       - "opendistroforelasticsearch-kibana={{ opendistro_opendistro_version }}"
       - "filebeat={{ opendistro_elasticsearch_version }}"
     state: present
-    update_cache: true
 
 - name: Enable elasticsearch
   service:
